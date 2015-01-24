@@ -7,10 +7,10 @@ include('includes/functions.php');
 $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 
 # Hole Usereingabe
-$up_steamdb	= request_var('steamdb', '', true);
-$filter		= request_var('filter', '', true);
-$suche		= request_var('suche', '', true);
-$in		= request_var('in', '', true);
+$up_steamdb = request_var('steamdb', '', true);
+$filter     = request_var('filter', '', true);
+$suche      = request_var('suche', '', true);
+$in         = request_var('in', '', true);
 
 # Weise variablen zu
 $f0a = $f1a = $fa = '';
@@ -22,11 +22,11 @@ if ($up_steamdb == 'update')
 # Switch für den Menü highlight
 switch ($filter)
 {
-    case 'f0':	$f0a = ' class="active"';
-        break;
-    case 'f1':	$f1a = ' class="active"';
-	break;
-      default:	$fa  = ' class="active"';
+    case 'f0':  $f0a = ' class="active"';
+    break;
+    case 'f1':  $f1a = ' class="active"';
+    break;
+    default:    $fa  = ' class="active"';
 }
 
 # Wenn nach einer ID gesucht wird, aber keine nummer angegeben ist
@@ -37,41 +37,43 @@ if ($in == 'SteamID' && !is_numeric($suche))
 # SQL Abfrage für die Suche (No AJAX mode)
 if ($suche != '' && $in != '')
 {
-    switch ($in) {
-	case 'SteamID':	$sql = "SELECT steamid, steamname, holarsename
-			    FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
-	    break;
-	case 'Steam':	$sql = "SELECT steamid, steamname, holarsename
-			    FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
-	    break;
-	case 'Holarse':	$sql = "SELECT steamid, steamname, holarsename
-			    FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
-	    break;
+    switch ($in)
+    {
+        case 'SteamID': $sql = "SELECT steamid, steamname, holarsename
+                                FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
+        break;
+        case 'Steam':   $sql = "SELECT steamid, steamname, holarsename
+                                FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+        break;
+        case 'Holarse': $sql = "SELECT steamid, steamname, holarsename
+                                FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+        break;
     }
 }
 # SQL Abfrage
 else
 {
-    switch ($filter) {
-	case 'f0':	$sql = "SELECT steamid, steamname, holarsename
-			    FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
-	    break;
-	case 'f1':	$sql = "SELECT steamid, steamname, holarsename
-			    FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
-	    break;
-	  default:	$sql = "SELECT steamid, steamname, holarsename
-			    FROM spiele ORDER BY steamid ASC";
+    switch ($filter)
+    {
+        case 'f0':  $sql = "SELECT steamid, steamname, holarsename
+                            FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
+        break;
+        case 'f1':  $sql = "SELECT steamid, steamname, holarsename
+                            FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
+        break;
+        default:    $sql = "SELECT steamid, steamname, holarsename
+                            FROM spiele ORDER BY steamid ASC";
     }
 }
 
 # Hole die daten aus der Datenbank
 $dbdata = $db->query($sql)->fetch();
 # Zähle die SQL Rows
-$entry	= $db->affected_rows;
+$entry  = $db->affected_rows;
 
 # Erstelle den Anzahls counter
 if ($entry == 1)
-	$entries = "$entry Eintrag";
+    $entries = "$entry Eintrag";
 else
     $entries = "$entry Einträge";
 
@@ -133,10 +135,10 @@ else
     foreach ($dbdata AS $key)
     {
         $match = '';
-    
+
         if ($key['holarsename'] != '')
         {
-	    $match = ' class="match"';
+            $match = ' class="match"';
         }
 ?>
         <tr<?=$match?>>
