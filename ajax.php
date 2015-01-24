@@ -44,8 +44,8 @@ if ($ajax == 'suche' && $in != '')
     }
 
     # Hole die daten aus der Datenbank
+    # und zähle die SQL Rows
     $dbdata = $db->query($sql)->fetch();
-    # Zähle die SQL Rows
     $entry  = $db->affected_rows;
 
     # Zähle alle Einträge
@@ -66,9 +66,9 @@ if ($ajax == 'suche' && $in != '')
         if ($key['holarsename'] != '')
             $holamatch++;
     }
-    
+
     $stats = "Steam: $all | Holarse: $hola | Match: $holamatch";
-    
+
     # Wenn keine Einträge gefunden wurden
     if ($entry < 1)
     {

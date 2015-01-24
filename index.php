@@ -7,7 +7,6 @@ include('includes/functions.php');
 $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 
 # Hole Usereingabe
-$up_steamdb = request_var('steamdb', '', true);
 $update     = request_var('update', '', true);
 $filter     = request_var('filter', '', true);
 $suche      = request_var('suche', '', true);
@@ -71,8 +70,8 @@ else
 }
 
 # Hole die daten aus der Datenbank
+# und zähle die SQL Rows
 $dbdata = $db->query($sql)->fetch();
-# Zähle die SQL Rows
 $entry  = $db->affected_rows;
 
 # Zähle alle Einträge
@@ -94,7 +93,7 @@ foreach ($dbdata AS $key)
         $holamatch++;
 }
 
-# Erstelle den Anzahls counter
+# Erstelle den Anzahl counter
 if ($entry == 1)
     $entries = "$entry Eintrag";
 else
@@ -132,7 +131,7 @@ else
                 </form>
             </div>
             <span id="ecc" style="padding-left:2px;display:inline-block"><?=$entries?></span>
-            <div id="statistic" style="margin-top:5px;padding-top:5px;border-top:1px dotted #666">Steam: <?=$all?> | Holarse: <?=$hola?> | Match: <?=$holamatch?></div>
+            <div id="statistic">Steam: <?=$all?> | Holarse: <?=$hola?> | Match: <?=$holamatch?></div>
         </div>
     </div>
 <?
