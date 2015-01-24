@@ -15,9 +15,9 @@ function updateSteamdb($db)
 
     foreach ($gsteamid[0] as $key => $steamid)
     {
-        $sql    = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."'";
+        $sql        = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."'";
         $db->query($sql)->fetch();
-
+        
         if ($db->affected_rows == 0)
         {
             $steamname  = $gsteamname[0][$key];
@@ -31,6 +31,41 @@ function updateSteamdb($db)
     }
 
     $updresponse = '<div class="update">SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
+    return $updresponse;
+}
+
+# Holarse Update Funktion
+function updateHolarse($db)
+{
+    $hdata    = json_decode(getUrl('http://www.holarse-linuxgaming.de/api/steamgames.json'),true);
+
+    $regex    = "/(?<=\/app\/).[0-9]+/";
+    $upcount  = 0;
+    
+    foreach ($hdata AS $key)
+    {
+        preg_match_all ($regex, $key['field_steam_value']['raw'], $gsteamid, PREG_PATTERN_ORDER);
+        
+        $steamid = isset($gsteamid[0][0]) ? $gsteamid[0][0] : '';
+
+        $sql     = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."' AND holarsename = ''";
+
+        $db->query($sql)->fetch();
+        
+        if ($db->affected_rows == 1)
+        {
+            $holname    = $key['title']['raw'];
+            
+            $eintrag    = "UPDATE spiele SET holarsename = '".$db->escape($holname)."'
+                            WHERE steamid = '".$db->escape($steamid)."';";
+            
+            $db->query($eintrag)->execute();
+
+            $upcount++;
+        }
+    }
+
+    $updresponse = '<div class="update">Holarse Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
     return $updresponse;
 }
 

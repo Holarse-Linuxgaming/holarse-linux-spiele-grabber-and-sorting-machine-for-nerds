@@ -61,9 +61,8 @@ if ($ajax == 'suche' && $in != '')
             $match = '';
 
             if ($key['holarsename'] != '')
-            {
                 $match = ' class="match"';
-            }
+
             echo '<tr'.$match.'><td>';
             echo '<a href="http://store.steampowered.com/app/'.$key['steamid'].'/" target="_blank">'.$key['steamid'].'</a>';
             echo '</td><td>'.$key['steamname'].'</td><td>'.$key['holarsename'].'</td></tr>';

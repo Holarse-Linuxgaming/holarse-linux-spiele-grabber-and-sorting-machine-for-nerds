@@ -137,9 +137,7 @@ else
         $match = '';
 
         if ($key['holarsename'] != '')
-        {
             $match = ' class="match"';
-        }
 ?>
         <tr<?=$match?>>
             <td>
