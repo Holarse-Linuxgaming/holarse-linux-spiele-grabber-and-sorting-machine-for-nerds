@@ -1,0 +1,9 @@
+### Lokalhost URL rewrite ###
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+RewriteRule ^nicht-vorhanden/$ index.php?filter=f0
+RewriteRule ^vorhanden/$ index.php?filter=f1
+RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
+RewriteRule ^(.*)$ http://%{HTTP_HOST}%{REQUEST_URI}/ [R=301,L]
+</IfModule>
