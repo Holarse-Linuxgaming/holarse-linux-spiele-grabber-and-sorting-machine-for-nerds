@@ -9,6 +9,8 @@ body{font-family:freesans;font-size:13px}
 #menu ul li a:hover{color:#555;text-shadow:1px 1px 0px #eaeaea;background:-moz-linear-gradient(top,#eaeaea,#D4E3E5);background:-webkit-linear-gradient(top,#eaeaea,#D4E3E5)}
 #menu ul li.active a{color:#333;text-shadow:1px 1px 0px #ecfdff;background:-moz-linear-gradient(top,#ecfdff,#acc8cc);background:-webkit-linear-gradient(top,#eaeaea,#c0c0c0)}
 #menu ul li.active a:hover{color:#333;text-shadow:1px 1px 0px #eaeaea;background:-moz-linear-gradient(top,#eaeaea,#acc8cc);background:-webkit-linear-gradient(top,#eaeaea,#c0c0c0)}
+#search_input{width:165px;font-size:13px}
+#search_select{font-size:13px}
 #statistic{margin-top:5px;padding-top:5px;border-top:1px dotted #666}
 .update{margin:0 0 10px 0;background:#d0d0d0;border:1px solid #bbb;border-radius:3px;padding:8px 10px;display:inline-block}
 table{box-shadow:0px 0px 1px #d0d0d0;color:#000;border-width:1px;border-color:#729ea5;border-collapse:collapse}

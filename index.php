@@ -17,10 +17,10 @@ $f0a = $f1a = $fa = '';
 
 # Hole SteamDB Linux Spiele
 if ($update == 'steamdb')
-    $update_return = updateSteamdb($db);
+$update_return = updateSteamdb($db);
 
 if ($update == 'holarse')
-    $update_return = updateHolarse($db);
+$update_return = updateHolarse($db);
 
 # Switch für den Menü highlight
 switch ($filter)
@@ -35,7 +35,7 @@ switch ($filter)
 # Wenn nach einer ID gesucht wird, aber keine nummer angegeben ist
 # leere die variable
 if ($in == 'SteamID' && !is_numeric($suche))
-    $suche  = '';
+$suche  = '';
 
 # SQL Abfrage für die Suche (No AJAX mode)
 if ($suche != '' && $in != '')
@@ -43,13 +43,13 @@ if ($suche != '' && $in != '')
     switch ($in)
     {
         case 'SteamID': $sql = "SELECT steamid, steamname, holarsename
-                                FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
+        FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
         break;
         case 'Steam':   $sql = "SELECT steamid, steamname, holarsename
-                                FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+        FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
         break;
         case 'Holarse': $sql = "SELECT steamid, steamname, holarsename
-                                FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+        FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
         break;
     }
 }
@@ -59,13 +59,13 @@ else
     switch ($filter)
     {
         case 'f0':  $sql = "SELECT steamid, steamname, holarsename
-                            FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
+        FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
         break;
         case 'f1':  $sql = "SELECT steamid, steamname, holarsename
-                            FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
+        FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
         break;
         default:    $sql = "SELECT steamid, steamname, holarsename
-                            FROM spiele ORDER BY steamid ASC";
+        FROM spiele ORDER BY steamid ASC";
     }
 }
 
@@ -90,14 +90,8 @@ $holamatch = 0;
 foreach ($dbdata AS $key)
 {
     if ($key['holarsename'] != '')
-        $holamatch++;
+    $holamatch++;
 }
-
-# Erstelle den Anzahl counter
-if ($entry == 1)
-    $entries = "$entry Eintrag";
-else
-    $entries = "$entry Einträge";
 
 # HTML
 ?>
@@ -122,24 +116,23 @@ else
         <div id="entrycounter">
             <div class="search" style="display:inline-block;">
                 <form method="get"  action="/">
-                    <input id="search_input" style="width:100px;font-size:13px" type="text" name="suche" placeholder="Suchen ...">
-                    <select id="search_select" style="font-size:13px" name="in">
+                    <input id="search_input" type="text" name="suche" placeholder="Suchen ...">
+                    <select id="search_select" name="in">
                         <option>SteamID</option>
                         <option selected>Steam</option>
                         <option>Holarse</option>
                     </select>
                 </form>
             </div>
-            <span id="ecc" style="padding-left:2px;display:inline-block"><?=$entries?></span>
-            <div id="statistic">Steam: <?=$all?> | Holarse: <?=$hola?> | Match: <?=$holamatch?></div>
+            <div id="statistic">Steam: <?=$all?> | Holarse: <?=$hola?> | Zeige: <?=$entry?> | Match: <?=$holamatch?></div>
         </div>
     </div>
-<?
-if ($update == 'steamdb' XOR $update == 'holarse')
-{
-    echo $update_return;
-}
-?>
+    <?
+    if ($update == 'steamdb' XOR $update == 'holarse')
+    {
+        echo $update_return;
+    }
+    ?>
     <table id="lstable">
         <thead>
             <tr>
@@ -148,32 +141,32 @@ if ($update == 'steamdb' XOR $update == 'holarse')
                 <th>Spieltitel Holarse</th>
             </tr>
         </thead>
-<?
-if ($entry < 1)
-{
-    echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
-}
-else
-{
-    foreach ($dbdata AS $key)
-    {
-        $match = '';
+        <?
+        if ($entry < 1)
+        {
+            echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
+        }
+        else
+        {
+            foreach ($dbdata AS $key)
+            {
+                $match = '';
 
-        if ($key['holarsename'] != '')
-            $match = ' class="match"';
-?>
-        <tr<?=$match?>>
-            <td>
-                <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank"><?=$key['steamid']?></a>
-            </td>
-            <td><?=$key['steamname']?></td>
-            <td><?=$key['holarsename']?></td>
-        </tr>
-<?
+                if ($key['holarsename'] != '')
+                $match = ' class="match"';
+                ?>
+                <tr<?=$match?>>
+                <td>
+                    <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank"><?=$key['steamid']?></a>
+                </td>
+                <td><?=$key['steamname']?></td>
+                <td><?=$key['holarsename']?></td>
+            </tr>
+            <?
+        }
     }
-}
-?>
-    </table>
-    <script src="js/script.js"></script>
+    ?>
+</table>
+<script src="js/script.js"></script>
 </body>
 </html>
