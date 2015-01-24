@@ -46,7 +46,7 @@ if ($ajax == 'suche' && $in != '')
     # Hole die daten aus der Datenbank
     $dbdata = $db->query($sql)->fetch();
     # Zähle die SQL Rows
-    $entry	= $db->affected_rows;
+    $entry  = $db->affected_rows;
 
     # Wenn keine Einträge gefunden wurden
     if ($entry < 1)

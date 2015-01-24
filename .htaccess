@@ -4,6 +4,10 @@ RewriteEngine on
 RewriteBase /
 RewriteRule ^nicht-vorhanden/$ index.php?filter=f0
 RewriteRule ^vorhanden/$ index.php?filter=f1
+
+RewriteCond %{SERVER_PORT}s ^(443(s)|[0-9]+s)$
+RewriteRule ^(.*)$ - [env=prot:%2]
+
 RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
-RewriteRule ^(.*)$ http://%{HTTP_HOST}%{REQUEST_URI}/ [R=301,L]
+RewriteRule ^(.*)$ http%{ENV:prot}://%{HTTP_HOST}%{REQUEST_URI}/ [R=301,L]
 </IfModule>
