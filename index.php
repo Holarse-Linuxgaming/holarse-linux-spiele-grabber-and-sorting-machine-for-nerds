@@ -17,10 +17,10 @@ $f0a = $f1a = $fa = '';
 
 # Hole SteamDB Linux Spiele
 if ($update == 'steamdb')
-$update_return = updateSteamdb($db);
+    $update_return = updateSteamdb($db);
 
 if ($update == 'holarse')
-$update_return = updateHolarse($db);
+    $update_return = updateHolarse($db);
 
 # Switch für den Menü highlight
 switch ($filter)
@@ -43,13 +43,13 @@ if ($suche != '' && $in != '')
     switch ($in)
     {
         case 'SteamID': $sql = "SELECT steamid, steamname, holarsename
-        FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
+                        FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
         break;
         case 'Steam':   $sql = "SELECT steamid, steamname, holarsename
-        FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+                        FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
         break;
         case 'Holarse': $sql = "SELECT steamid, steamname, holarsename
-        FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+                        FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
         break;
     }
 }
@@ -59,13 +59,13 @@ else
     switch ($filter)
     {
         case 'f0':  $sql = "SELECT steamid, steamname, holarsename
-        FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
+                    FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
         break;
         case 'f1':  $sql = "SELECT steamid, steamname, holarsename
-        FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
+                    FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
         break;
         default:    $sql = "SELECT steamid, steamname, holarsename
-        FROM spiele ORDER BY steamid ASC";
+                    FROM spiele ORDER BY steamid ASC";
     }
 }
 
@@ -153,7 +153,7 @@ foreach ($dbdata AS $key)
                 $match = '';
 
                 if ($key['holarsename'] != '')
-                $match = ' class="match"';
+                    $match = ' class="match"';
                 ?>
                 <tr<?=$match?>>
                 <td>
