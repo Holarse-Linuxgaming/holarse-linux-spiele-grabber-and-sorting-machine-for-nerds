@@ -2,8 +2,8 @@
 include('includes/functions.php');
 
 # Hole Usereingabe
-$ajax	= request_var('ajax', '', true);
-$suche	= request_var('suche', '', true);
+$ajax   = request_var('ajax', '', true);
+$suche  = request_var('suche', '', true);
 $in     = request_var('in', '', true);
 
 # AJAX suche
@@ -18,20 +18,20 @@ if ($ajax == 'suche' && $in != '')
     # Wenn nach einer ID gesucht wird, aber keine nummer angegeben ist
     # leere die variable
     if ($in == 'SteamID' && !is_numeric($suche))
-    $suche  = '';
+        $suche  = '';
 
     # SQL Abfrage wenn Suchbegriff mindestens 2 Zeichen lang ist
     if (strlen($suche) > 1)
     {
         switch ($in)
         {
-            case 'SteamID':	$sql = "SELECT steamid, steamname, holarsename
+            case 'SteamID':     $sql = "SELECT steamid, steamname, holarsename
                                     FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
             break;
-            case 'Steam':	$sql = "SELECT steamid, steamname, holarsename
+            case 'Steam':       $sql = "SELECT steamid, steamname, holarsename
                                     FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
             break;
-            case 'Holarse':	$sql = "SELECT steamid, steamname, holarsename
+            case 'Holarse':     $sql = "SELECT steamid, steamname, holarsename
                                     FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
             break;
         }
@@ -48,6 +48,27 @@ if ($ajax == 'suche' && $in != '')
     # Zähle die SQL Rows
     $entry  = $db->affected_rows;
 
+    # Zähle alle Einträge
+    $sqla  = "SELECT id FROM spiele";
+    $db->query($sqla)->fetch();
+    $all   = $db->affected_rows;
+
+    # Zähle alle Holarse Einträge
+    $sqlh  = "SELECT id FROM spiele WHERE holarsename != ''";
+    $db->query($sqlh)->fetch();
+    $hola  = $db->affected_rows;
+
+    # Zähle Übereinstimmungen
+    # von Holarse Einträgen
+    $holamatch = 0;
+    foreach ($dbdata AS $key)
+    {
+        if ($key['holarsename'] != '')
+            $holamatch++;
+    }
+    
+    $stats = "Steam: $all | Holarse: $hola | Match: $holamatch";
+    
     # Wenn keine Einträge gefunden wurden
     if ($entry < 1)
     {
@@ -85,6 +106,7 @@ if ($ajax == 'suche' && $in != '')
         });
         $('#ecc').html('<?=$entries?>');
         $("table").trigger("updateAll");
+        $('#statistic').html('<?=$stats?>');
     });
     </script>
 <?

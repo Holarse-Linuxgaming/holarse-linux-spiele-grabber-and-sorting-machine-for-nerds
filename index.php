@@ -8,6 +8,7 @@ $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 
 # Hole Usereingabe
 $up_steamdb = request_var('steamdb', '', true);
+$update     = request_var('update', '', true);
 $filter     = request_var('filter', '', true);
 $suche      = request_var('suche', '', true);
 $in         = request_var('in', '', true);
@@ -16,8 +17,11 @@ $in         = request_var('in', '', true);
 $f0a = $f1a = $fa = '';
 
 # Hole SteamDB Linux Spiele
-if ($up_steamdb == 'update')
-    $steamdb_update = updateSteamdb($db);
+if ($update == 'steamdb')
+    $update_return = updateSteamdb($db);
+
+if ($update == 'holarse')
+    $update_return = updateHolarse($db);
 
 # Switch für den Menü highlight
 switch ($filter)
@@ -71,6 +75,25 @@ $dbdata = $db->query($sql)->fetch();
 # Zähle die SQL Rows
 $entry  = $db->affected_rows;
 
+# Zähle alle Einträge
+$sqla  = "SELECT id FROM spiele";
+$db->query($sqla)->fetch();
+$all   = $db->affected_rows;
+
+# Zähle alle Holarse Einträge
+$sqlh  = "SELECT id FROM spiele WHERE holarsename != ''";
+$db->query($sqlh)->fetch();
+$hola  = $db->affected_rows;
+
+# Zähle Übereinstimmungen
+# von Holarse Einträgen
+$holamatch = 0;
+foreach ($dbdata AS $key)
+{
+    if ($key['holarsename'] != '')
+        $holamatch++;
+}
+
 # Erstelle den Anzahls counter
 if ($entry == 1)
     $entries = "$entry Eintrag";
@@ -99,7 +122,7 @@ else
         <br>
         <div id="entrycounter">
             <div class="search" style="display:inline-block;">
-                <form method="get" target="_self">
+                <form method="get"  action="/">
                     <input id="search_input" style="width:100px;font-size:13px" type="text" name="suche" placeholder="Suchen ...">
                     <select id="search_select" style="font-size:13px" name="in">
                         <option>SteamID</option>
@@ -109,12 +132,13 @@ else
                 </form>
             </div>
             <span id="ecc" style="padding-left:2px;display:inline-block"><?=$entries?></span>
+            <div id="statistic" style="margin-top:5px;padding-top:5px;border-top:1px dotted #666">Steam: <?=$all?> | Holarse: <?=$hola?> | Match: <?=$holamatch?></div>
         </div>
     </div>
 <?
-if ($up_steamdb == 'update')
+if ($update == 'steamdb' XOR $update == 'holarse')
 {
-    echo $steamdb_update;
+    echo $update_return;
 }
 ?>
     <table id="lstable">
