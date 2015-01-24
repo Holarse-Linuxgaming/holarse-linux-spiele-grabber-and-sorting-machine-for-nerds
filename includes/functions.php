@@ -15,34 +15,33 @@ function updateSteamdb($db)
 
     foreach ($gsteamid[0] as $key => $steamid)
     {
-        $sql        = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."'";
-        $pastedata	= $db->query($sql)->fetch();
-        $count      = $db->affected_rows;
-        if ($count == 0)
-        {
-            $steamname	= $gsteamname[0][$key];
-            $eintrag	= "INSERT INTO spiele (steamid, steamname)
-            VALUES ('$steamid' , '$steamname')";
+        $sql    = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."'";
+        $db->query($sql)->fetch();
 
-            $insert	= $db->query($eintrag)->execute();
+        if ($db->affected_rows == 0)
+        {
+            $steamname  = $gsteamname[0][$key];
+            $eintrag    = "INSERT INTO spiele (steamid, steamname)
+                            VALUES ('$steamid' , '$steamname')";
+
+            $db->query($eintrag)->execute();
 
             $upcount++;
         }
     }
 
-    $give = '<div class="update">SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
-    return $give;
+    $updresponse = '<div class="update">SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
+    return $updresponse;
 }
 
 # Curl Website download Funktion
 function getUrl($url)
 {
-    $submit_url = $url;
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_POST, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0");
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_CONNECTTIMEOUT ,0);
     curl_setopt($curl, CURLOPT_TIMEOUT, 30); //timeout in seconds
