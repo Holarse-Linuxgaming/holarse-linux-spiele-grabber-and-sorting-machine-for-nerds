@@ -9,7 +9,7 @@ $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 # Hole Usereingabe
 $update     = request_var('update', '', true);
 $filter     = request_var('filter', '', true);
-$suche      = request_var('suche', '', true);
+$suche      = trim(request_var('suche', '', true));
 $in         = request_var('in', '', true);
 
 # Weise variablen zu
@@ -35,7 +35,7 @@ switch ($filter)
 # Wenn nach einer ID gesucht wird, aber keine nummer angegeben ist
 # leere die variable
 if ($in == 'SteamID' && !is_numeric($suche))
-$suche  = '';
+    $suche  = '';
 
 # SQL Abfrage für die Suche (No AJAX mode)
 if ($suche != '' && $in != '')
@@ -79,11 +79,6 @@ $sqla  = "SELECT id FROM spiele";
 $db->query($sqla)->fetch();
 $all   = $db->affected_rows;
 
-# Zähle alle Holarse Einträge
-$sqlh  = "SELECT id FROM spiele WHERE holarsename != ''";
-$db->query($sqlh)->fetch();
-$hola  = $db->affected_rows;
-
 # Zähle Übereinstimmungen
 # von Holarse Einträgen
 $holamatch = 0;
@@ -124,15 +119,15 @@ foreach ($dbdata AS $key)
                     </select>
                 </form>
             </div>
-            <div id="statistic">Steam: <?=$all?> | Holarse: <?=$hola?> | Zeige: <?=$entry?> | Match: <?=$holamatch?></div>
+            <div id="statistic">Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?></div>
         </div>
     </div>
-    <?
+<?
     if ($update == 'steamdb' XOR $update == 'holarse')
     {
         echo $update_return;
     }
-    ?>
+?>
     <table id="lstable">
         <thead>
             <tr>
@@ -141,7 +136,7 @@ foreach ($dbdata AS $key)
                 <th>Spieltitel Holarse</th>
             </tr>
         </thead>
-        <?
+<?
         if ($entry < 1)
         {
             echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
@@ -154,19 +149,19 @@ foreach ($dbdata AS $key)
 
                 if ($key['holarsename'] != '')
                     $match = ' class="match"';
-                ?>
-                <tr<?=$match?>>
+?>
+            <tr<?=$match?>>
                 <td>
                     <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank"><?=$key['steamid']?></a>
                 </td>
                 <td><?=$key['steamname']?></td>
                 <td><?=$key['holarsename']?></td>
             </tr>
-            <?
+<?
+            }
         }
-    }
-    ?>
-</table>
-<script src="js/script.js"></script>
+?>
+    </table>
+    <script src="js/script.js"></script>
 </body>
 </html>

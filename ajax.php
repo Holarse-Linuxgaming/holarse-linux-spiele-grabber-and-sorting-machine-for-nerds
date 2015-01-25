@@ -3,7 +3,7 @@ include('includes/functions.php');
 
 # Hole Usereingabe
 $ajax   = request_var('ajax', '', true);
-$suche  = request_var('suche', '', true);
+$suche  = trim(request_var('suche', '', true));
 $in     = request_var('in', '', true);
 
 # AJAX suche
@@ -53,11 +53,6 @@ if ($ajax == 'suche' && $in != '')
     $db->query($sqla)->fetch();
     $all   = $db->affected_rows;
 
-    # Zähle alle Holarse Einträge
-    $sqlh  = "SELECT id FROM spiele WHERE holarsename != ''";
-    $db->query($sqlh)->fetch();
-    $hola  = $db->affected_rows;
-
     # Zähle Übereinstimmungen
     # von Holarse Einträgen
     $holamatch = 0;
@@ -67,7 +62,7 @@ if ($ajax == 'suche' && $in != '')
             $holamatch++;
     }
 
-    $stats = "Steam: $all | Holarse: $hola | Match: $holamatch";
+    $stats = "Gesamt: $all | Steam: $entry | Holarse: $holamatch";
 
     # Wenn keine Einträge gefunden wurden
     if ($entry < 1)
@@ -104,7 +99,6 @@ if ($ajax == 'suche' && $in != '')
             var rtitle = $(this).attr('data-hint');
             $(this).attr('title',rtitle);
         });
-        $('#ecc').html('<?=$entries?>');
         $("table").trigger("updateAll");
         $('#statistic').html('<?=$stats?>');
     });
