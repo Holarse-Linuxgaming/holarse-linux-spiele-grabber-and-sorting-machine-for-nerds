@@ -62,8 +62,10 @@ if ($ajax == 'suche' && $in != '')
             $holamatch++;
     }
 
+    $percent = round($holamatch / $entry * 100);
+
     # Status Anzeige generieren, welche per JS updated wird
-    $stats = "Gesamt: $all | Steam: $entry | Holarse: $holamatch";
+    $stats = "Gesamt: $all | Steam: $entry | Holarse: $holamatch ($percent%)";
 
     # Wenn keine Einträge in der Datenbank gefunden wurden
     # den Benutzer darüber informieren

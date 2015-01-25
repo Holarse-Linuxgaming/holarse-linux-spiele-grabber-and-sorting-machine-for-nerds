@@ -88,6 +88,8 @@ foreach ($dbdata AS $key)
         $holamatch++;
 }
 
+$percent = round($holamatch / $entry * 100);
+
 # HTML
 ?>
 <!doctype html>
@@ -119,7 +121,7 @@ foreach ($dbdata AS $key)
                     </select>
                 </form>
             </div>
-            <div id="statistic">Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?></div>
+            <div id="statistic">Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?> (<?=$percent?>%)</div>
         </div>
     </div>
 <?
