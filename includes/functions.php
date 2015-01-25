@@ -4,11 +4,14 @@ function updateSteamdb($db)
 {
     $sdbdata    = getUrl('https://steamdb.info/linux/');
 
+    $regex0     = "/(?<=id\=\"table-apps-confirmed\"\>).*(?=\<\/table\>\<\/div\>)/msSU";
+    preg_match_all ($regex0, $sdbdata, $availlinux, PREG_PATTERN_ORDER);
+
     $regex1     = "/(?<=href\=\"\/app\/).*(?=\/\")/msSU";
-    preg_match_all ($regex1, $sdbdata, $gsteamid, PREG_PATTERN_ORDER);
+    preg_match_all ($regex1, $availlinux[0][0], $gsteamid, PREG_PATTERN_ORDER);
 
     $regex2     = "/(?<=\<\/a\>\<\/td\>\<td\>).*(?=\<\/td\>)/msSU";
-    preg_match_all ($regex2, $sdbdata, $gsteamname, PREG_PATTERN_ORDER);
+    preg_match_all ($regex2, $availlinux[0][0], $gsteamname, PREG_PATTERN_ORDER);
     $array      = array();
 
     $upcount    = 0;
@@ -17,7 +20,7 @@ function updateSteamdb($db)
     {
         $sql        = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."'";
         $db->query($sql)->fetch();
-        
+
         if ($db->affected_rows == 0)
         {
             $steamname  = $gsteamname[0][$key];
@@ -41,24 +44,24 @@ function updateHolarse($db)
 
     $regex    = "/(?<=\/app\/).[0-9]+/";
     $upcount  = 0;
-    
+
     foreach ($hdata AS $key)
     {
         preg_match_all ($regex, $key['field_steam_value']['raw'], $gsteamid, PREG_PATTERN_ORDER);
-        
+
         $steamid = isset($gsteamid[0][0]) ? $gsteamid[0][0] : '';
 
         $sql     = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."' AND holarsename = ''";
 
         $db->query($sql)->fetch();
-        
+
         if ($db->affected_rows == 1)
         {
             $holname    = $key['title']['raw'];
-            
+
             $eintrag    = "UPDATE spiele SET holarsename = '".$db->escape($holname)."'
                             WHERE steamid = '".$db->escape($steamid)."';";
-            
+
             $db->query($eintrag)->execute();
 
             $upcount++;

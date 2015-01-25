@@ -35,8 +35,7 @@ $(function()
 
     $('.ribbon').each(function()
     {
-        var rtitle = $(this).attr('data-hint');
-        $(this).attr('title',rtitle);
+        $(this).attr('title', $(this).attr('data-hint') );
     });
 
     $('#search_input,#search_select').on('keyup change',function(ev)

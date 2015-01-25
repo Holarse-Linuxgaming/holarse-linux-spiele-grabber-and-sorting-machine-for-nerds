@@ -85,7 +85,7 @@ $holamatch = 0;
 foreach ($dbdata AS $key)
 {
     if ($key['holarsename'] != '')
-    $holamatch++;
+        $holamatch++;
 }
 
 # HTML
@@ -109,7 +109,7 @@ foreach ($dbdata AS $key)
         </ul>
         <br>
         <div id="entrycounter">
-            <div class="search" style="display:inline-block;">
+            <div class="search">
                 <form method="get"  action="/">
                     <input id="search_input" type="text" name="suche" placeholder="Suchen ...">
                     <select id="search_select" name="in">
@@ -136,11 +136,17 @@ foreach ($dbdata AS $key)
                 <th>Spieltitel Holarse</th>
             </tr>
         </thead>
+        <tfoot>
+            <tr><th colspan="3"></th></tr>
+        </tfoot>
 <?
+        # Wenn keine Einträge in der Datenbank gefunden wurden
+        # den Benutzer darüber informieren
         if ($entry < 1)
         {
             echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
         }
+        # Datenbank Einträge ausgeben
         else
         {
             foreach ($dbdata AS $key)

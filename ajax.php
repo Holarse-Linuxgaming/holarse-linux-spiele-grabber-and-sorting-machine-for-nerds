@@ -62,14 +62,16 @@ if ($ajax == 'suche' && $in != '')
             $holamatch++;
     }
 
+    # Status Anzeige generieren, welche per JS updated wird
     $stats = "Gesamt: $all | Steam: $entry | Holarse: $holamatch";
 
-    # Wenn keine Einträge gefunden wurden
+    # Wenn keine Einträge in der Datenbank gefunden wurden
+    # den Benutzer darüber informieren
     if ($entry < 1)
     {
         echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
     }
-    # Einträge ausgeben
+    # Datenbank Einträge ausgeben
     else
     {
         foreach ($dbdata AS $key)
@@ -96,8 +98,7 @@ if ($ajax == 'suche' && $in != '')
     {
         $('.ribbon').each(function()
         {
-            var rtitle = $(this).attr('data-hint');
-            $(this).attr('title',rtitle);
+            $(this).attr('title', $(this).attr('data-hint') );
         });
         $("table").trigger("updateAll");
         $('#statistic').html('<?=$stats?>');
