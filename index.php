@@ -42,14 +42,14 @@ if ($suche != '' && $in != '')
 {
     switch ($in)
     {
-        case 'SteamID': $sql = "SELECT steamid, steamname, holarsename
-                        FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
+        case 'SteamID': $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                        WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
         break;
-        case 'Steam':   $sql = "SELECT steamid, steamname, holarsename
-                        FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+        case 'Steam':   $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                        WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
         break;
-        case 'Holarse': $sql = "SELECT steamid, steamname, holarsename
-                        FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+        case 'Holarse': $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                        WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
         break;
     }
 }
@@ -58,14 +58,14 @@ else
 {
     switch ($filter)
     {
-        case 'f0':  $sql = "SELECT steamid, steamname, holarsename
-                    FROM spiele WHERE holarsename = '' ORDER BY steamid ASC";
+        case 'f0':  $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                    WHERE holarsename = '' ORDER BY steamid ASC";
         break;
-        case 'f1':  $sql = "SELECT steamid, steamname, holarsename
-                    FROM spiele WHERE holarsename != '' ORDER BY steamid ASC";
+        case 'f1':  $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                    WHERE holarsename != '' ORDER BY steamid ASC";
         break;
-        default:    $sql = "SELECT steamid, steamname, holarsename
-                    FROM spiele ORDER BY steamid ASC";
+        default:    $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                    ORDER BY steamid ASC";
     }
 }
 
@@ -88,7 +88,10 @@ foreach ($dbdata AS $key)
         $holamatch++;
 }
 
-$percent = round($holamatch / $entry * 100);
+if ($holamatch > 0)
+    $percent = round($holamatch / $entry * 100);
+else
+    $percent = 0;
 
 # HTML
 ?>
@@ -107,7 +110,9 @@ $percent = round($holamatch / $entry * 100);
 <body>
     <div id="menu">
         <ul>
-            <li<?=$fa?>><a href="./">Alle Anzeigen</a></li><li<?=$f0a?>><a href="nicht-vorhanden/">Nicht vorhanden</a></li><li<?=$f1a?>><a href="vorhanden/">Vorhanden</a></li>
+            <li<?=$fa?>><a href="./">Alle Anzeigen</a>
+            <li<?=$f0a?>><a href="nicht-vorhanden/">Nicht vorhanden</a>
+            <li<?=$f1a?>><a href="vorhanden/">Vorhanden</a>
         </ul>
         <br>
         <div id="entrycounter">
@@ -160,7 +165,9 @@ $percent = round($holamatch / $entry * 100);
 ?>
             <tr<?=$match?>>
                 <td>
-                    <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank"><?=$key['steamid']?></a>
+                    <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank">
+                        <?=$key['steamid']?>
+                    </a>
                 </td>
                 <td><?=$key['steamname']?></td>
                 <td><?=$key['holarsename']?></td>

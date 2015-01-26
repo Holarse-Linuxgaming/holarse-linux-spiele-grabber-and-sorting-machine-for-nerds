@@ -25,22 +25,21 @@ if ($ajax == 'suche' && $in != '')
     {
         switch ($in)
         {
-            case 'SteamID':     $sql = "SELECT steamid, steamname, holarsename
-                                    FROM spiele WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
+            case 'SteamID':     $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                                WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
             break;
-            case 'Steam':       $sql = "SELECT steamid, steamname, holarsename
-                                    FROM spiele WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+            case 'Steam':       $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                                WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
             break;
-            case 'Holarse':     $sql = "SELECT steamid, steamname, holarsename
-                                    FROM spiele WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+            case 'Holarse':     $sql = "SELECT steamid, steamname, holarsename FROM spiele
+                                WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
             break;
         }
     }
     # SQL Abfrage wenn Suchbegriff weniger als 2 Zeichen lang ist
     else
     {
-        $sql    = "SELECT steamid, steamname, holarsename
-                    FROM spiele ORDER BY steamid ASC";
+        $sql = "SELECT steamid, steamname, holarsename FROM spiele ORDER BY steamid ASC";
     }
 
     # Hole die daten aus der Datenbank
@@ -62,7 +61,10 @@ if ($ajax == 'suche' && $in != '')
             $holamatch++;
     }
 
-    $percent = round($holamatch / $entry * 100);
+    if ($holamatch > 0)
+        $percent = round($holamatch / $entry * 100);
+    else
+        $percent = 0;
 
     # Status Anzeige generieren, welche per JS updated wird
     $stats = "Gesamt: $all | Steam: $entry | Holarse: $holamatch ($percent%)";
@@ -83,9 +85,15 @@ if ($ajax == 'suche' && $in != '')
             if ($key['holarsename'] != '')
                 $match = ' class="match"';
 
-            echo '<tr'.$match.'><td>';
-            echo '<a href="http://store.steampowered.com/app/'.$key['steamid'].'/" target="_blank">'.$key['steamid'].'</a>';
-            echo '</td><td>'.$key['steamname'].'</td><td>'.$key['holarsename'].'</td></tr>';
+            echo '<tr'.$match.'>';
+                echo '<td>';
+                    echo '<a href="http://store.steampowered.com/app/'.$key['steamid'].'/" target="_blank">';
+                        echo $key['steamid'];
+                    echo '</a>';
+                echo '</td>';
+                echo '<td>'.$key['steamname'].'</td>';
+                echo '<td>'.$key['holarsename'].'</td>';
+            echo '</tr>';
         }
     }
 
