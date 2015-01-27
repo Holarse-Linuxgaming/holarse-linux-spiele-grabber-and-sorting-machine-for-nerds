@@ -93,14 +93,20 @@ if ($holamatch > 0)
 else
     $percent = 0;
 
+# Letzte Updates Abfragen
+$updsql     = "SELECT name, xtime FROM `update` ORDER BY id ASC";
+$upddata    = $db->query($updsql)->fetch();
+$t_steamdb  = date("H:i",$upddata[0]['xtime']);
+$t_holarse  = date("H:i",$upddata[1]['xtime']);
+
 # HTML
 ?>
 <!doctype html>
 <html>
 <head>
-    <base href="<?=PROT?>linuxgames.n0paste.tk">
+    <base href="<?=PROT?>linuxgames.n0paste.tk/">
     <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="initial-scale=.9, maximum-scale=.9">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Linuxspiele Liste</title>
     <link rel="icon" href="favicon.png" type="image/x-icon">
@@ -108,75 +114,82 @@ else
     <script src="js/jquery.tablesorter.min.js"></script>
 </head>
 <body>
-    <div id="menu">
-        <ul>
-            <li<?=$fa?>><a href="./">Alle Anzeigen</a>
-            <li<?=$f0a?>><a href="nicht-vorhanden/">Nicht vorhanden</a>
-            <li<?=$f1a?>><a href="vorhanden/">Vorhanden</a>
-        </ul>
-        <br>
-        <div id="entrycounter">
-            <div class="search">
-                <form method="get"  action="/">
-                    <input id="search_input" type="text" name="suche" placeholder="Suchen ...">
-                    <select id="search_select" name="in">
-                        <option>SteamID</option>
-                        <option selected>Steam</option>
-                        <option>Holarse</option>
-                    </select>
-                </form>
+    <div class="box">
+        <div id="menu">
+            <ul>
+                <li<?=$fa?>><a href="./">Alle Anzeigen</a>
+                <li<?=$f0a?>><a href="nicht-vorhanden/">Nicht vorhanden</a>
+                <li<?=$f1a?>><a href="vorhanden/">Vorhanden</a>
+            </ul>
+            <br>
+            <div id="entrycounter">
+                <div class="search">
+                    <form method="get"  action="/">
+                        <select id="search_select" name="in">
+                            <option>SteamID</option>
+                            <option selected>Steam</option>
+                            <option>Holarse</option>
+                        </select>
+                        <input id="search_input" type="text" name="suche" placeholder="Suchen ...">
+                    </form>
+                </div>
+                <div class="statistic">
+                    Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?> (<?=$percent?>%)
+                </div>
+                <div class="statistic date">
+                    Letzte Updates:<br>SteamDB: <?=$t_steamdb?> Uhr | Holarse: <?=$t_holarse?> Uhr
+                </div>
             </div>
-            <div id="statistic">Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?> (<?=$percent?>%)</div>
         </div>
-    </div>
 <?
-    if ($update == 'steamdb' XOR $update == 'holarse')
-    {
-        echo $update_return;
-    }
-?>
-    <table id="lstable">
-        <thead>
-            <tr>
-                <th>SteamID</th>
-                <th>Spieltitel Steam</th>
-                <th>Spieltitel Holarse</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr><th colspan="3"></th></tr>
-        </tfoot>
-<?
-        # Wenn keine Einträge in der Datenbank gefunden wurden
-        # den Benutzer darüber informieren
-        if ($entry < 1)
+        if ($update == 'steamdb' XOR $update == 'holarse')
         {
-            echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
+            echo $update_return;
         }
-        # Datenbank Einträge ausgeben
-        else
-        {
-            foreach ($dbdata AS $key)
+?>
+        <table id="lstable">
+            <thead>
+                <tr>
+                    <th>SteamID</th>
+                    <th>Spieltitel Steam</th>
+                    <th>Spieltitel Holarse</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr><th colspan="3"></th></tr>
+            </tfoot>
+<?
+            # Wenn keine Einträge in der Datenbank gefunden wurden
+            # den Benutzer darüber informieren
+            if ($entry < 1)
             {
-                $match = '';
-
-                if ($key['holarsename'] != '')
-                    $match = ' class="match"';
-?>
-            <tr<?=$match?>>
-                <td>
-                    <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank">
-                        <?=$key['steamid']?>
-                    </a>
-                </td>
-                <td><?=$key['steamname']?></td>
-                <td><?=$key['holarsename']?></td>
-            </tr>
-<?
+                echo '<tr><td colspan="3">Keine Einträge gefunden</td></tr>';
             }
-        }
+            # Datenbank Einträge ausgeben
+            else
+            {
+                foreach ($dbdata AS $key)
+                {
+                    $match = '';
+
+                    if ($key['holarsename'] != '')
+                        $match = ' class="match"';
 ?>
-    </table>
+                <tr<?=$match?>>
+                    <td>
+                        <a href="http://store.steampowered.com/app/<?=$key['steamid']?>/" target="_blank">
+                            <?=$key['steamid']?>
+                        </a>
+                    </td>
+                    <td><?=$key['steamname']?></td>
+                    <td><?=$key['holarsename']?></td>
+                </tr>
+<?
+                }
+            }
+?>
+        </table>
+    </div>
     <script src="js/script.js"></script>
 </body>
 </html>

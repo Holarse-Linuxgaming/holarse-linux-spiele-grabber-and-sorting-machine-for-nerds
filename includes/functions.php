@@ -32,6 +32,10 @@ function updateSteamdb($db)
             $upcount++;
         }
     }
+    
+    $store_time = "UPDATE `update` SET xtime = '".time()."' WHERE name = 'steamdb';";
+
+    $db->query($store_time)->execute();
 
     $updresponse = '<div class="update">SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
     return $updresponse;
@@ -67,6 +71,10 @@ function updateHolarse($db)
             $upcount++;
         }
     }
+    
+    $store_time = "UPDATE `update` SET xtime = '".time()."' WHERE name = 'holarse';";
+
+    $db->query($store_time)->execute();
 
     $updresponse = '<div class="update">Holarse Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
     return $updresponse;
