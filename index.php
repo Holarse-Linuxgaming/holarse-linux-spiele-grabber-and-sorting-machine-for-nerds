@@ -137,7 +137,7 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
                     Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?> (<?=$percent?>%)
                 </div>
                 <div class="statistic date">
-                    Letzte Updates:<br>SteamDB: <?=$t_steamdb?> Uhr | Holarse: <?=$t_holarse?> Uhr
+                    <span class="title">Letzte Updates</span><br>SteamDB: <?=$t_steamdb?> Uhr | Holarse: <?=$t_holarse?> Uhr
                 </div>
             </div>
         </div>

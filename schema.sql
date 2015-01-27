@@ -28,7 +28,22 @@ CREATE TABLE `spiele` (
   `steamname` text NOT NULL,
   `holarsename` text NOT NULL,
   PRIMARY KEY (`id`,`steamid`,`steamname`(10),`holarsename`(10))
-) ENGINE=MyISAM AUTO_INCREMENT=1127 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2004 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `update`
+--
+
+DROP TABLE IF EXISTS `update`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `update` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `xtime` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -40,4 +55,4 @@ CREATE TABLE `spiele` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-24 16:33:23
+-- Dump completed on 2015-01-27 14:14:45

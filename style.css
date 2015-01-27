@@ -15,6 +15,7 @@ body{font-family:freesans;font-size:13px}
 #search_select{font-size:13px}
 .statistic{margin-top:5px;padding-top:5px;border-top:1px dotted #666}
 .date{line-height:19px}
+.title{font-weight:bold;color:#99a4a6;text-shadow:1px 1px 0px #e3f3f5}
 .update{margin:0 0 10px 0;background:#d0d0d0;border:1px solid #bbb;border-radius:3px;padding:8px 10px;display:inline-block}
 table{min-width:282px;box-shadow:0px 0px 1px #d0d0d0;color:#000;border-width:1px;border-color:#729ea5;border-collapse:collapse;margin-bottom:30px}
 table th{font-size:14px;background-color:#acc8cc;border-width:1px;padding:4px 20px 4px 4px;border-style:solid;border-color:#729ea5;text-align:left;border-bottom:#729ea5 2px solid}
