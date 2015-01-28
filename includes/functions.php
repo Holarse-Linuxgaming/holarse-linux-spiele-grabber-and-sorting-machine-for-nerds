@@ -37,7 +37,7 @@ function updateSteamdb($db)
 
     $db->query($store_time)->execute();
 
-    $updresponse = '<div class="update">SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
+    $updresponse = 'SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt';
     return $updresponse;
 }
 
@@ -76,7 +76,7 @@ function updateHolarse($db)
 
     $db->query($store_time)->execute();
 
-    $updresponse = '<div class="update">Holarse Update: Es wurden '.$upcount.' Einträge hinzugefügt</div>';
+    $updresponse = 'Holarse Update: Es wurden '.$upcount.' Einträge hinzugefügt';
     return $updresponse;
 }
 

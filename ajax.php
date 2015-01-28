@@ -5,6 +5,7 @@ include('includes/functions.php');
 $ajax   = request_var('ajax', '', true);
 $suche  = trim(request_var('suche', '', true));
 $in     = request_var('in', '', true);
+$dbu    = request_var('dbu', '', true);
 
 # AJAX suche
 if ($ajax == 'suche' && $in != '')
@@ -111,9 +112,24 @@ if ($ajax == 'suche' && $in != '')
             $(this).attr('title', $(this).attr('data-hint') );
         });
         $("table").trigger("updateAll");
-        $('#statistic').html('<?=$stats?>');
+        $('#stat').html('<?=$stats?>');
     });
     </script>
 <?
+}
+if ($ajax == 'update' && $dbu != '')
+{
+    include('includes/config.php');
+    include('includes/mysqli.class.php');
+
+    # Öffne Datenbank verbindung
+    $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
+    
+    if ($dbu == 'steamdb')
+        echo updateSteamdb($db);
+
+    if ($dbu == 'holarse')
+        echo updateHolarse($db);
+        
 }
 ?>

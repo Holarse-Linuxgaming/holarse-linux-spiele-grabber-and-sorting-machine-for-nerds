@@ -7,20 +7,12 @@ include('includes/functions.php');
 $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 
 # Hole Usereingabe
-$update     = request_var('update', '', true);
 $filter     = request_var('filter', '', true);
 $suche      = trim(request_var('suche', '', true));
 $in         = request_var('in', '', true);
 
 # Weise variablen zu
 $f0a = $f1a = $fa = '';
-
-# Hole SteamDB Linux Spiele
-if ($update == 'steamdb')
-    $update_return = updateSteamdb($db);
-
-if ($update == 'holarse')
-    $update_return = updateHolarse($db);
 
 # Switch für den Menü highlight
 switch ($filter)
@@ -133,7 +125,7 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
                         <input id="search_input" type="text" name="suche" placeholder="Suchen ...">
                     </form>
                 </div>
-                <div class="statistic">
+                <div class="statistic" id="stat">
                     Gesamt: <?=$all?> | Steam: <?=$entry?> | Holarse: <?=$holamatch?> (<?=$percent?>%)
                 </div>
                 <div class="statistic date">
@@ -148,12 +140,7 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
                 </div>
             </div>
         </div>
-<?
-        if ($update == 'steamdb' XOR $update == 'holarse')
-        {
-            echo $update_return;
-        }
-?>
+        <div class="update"></div>
         <table id="lstable">
             <thead>
                 <tr>

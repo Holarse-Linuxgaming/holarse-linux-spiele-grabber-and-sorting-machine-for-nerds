@@ -71,23 +71,41 @@ $(function()
         var get_attr = $('.upd_menu').attr('active');
         if (get_attr == 'true')
         {
-            $('.upd_menu').css('display','none');
-            $('.upd_menu').removeAttr('active');
+            $('.upd_menu').css('display','none').removeAttr('active');
         }
         else
         {
-            $('.upd_menu').css('display','block');
-            $('.upd_menu').attr('active', 'true');
+            $('.upd_menu').css('display','block').attr('active', 'true');
         }
     });
     
     $('.upd_holarse').click(function()
     {
-        window.location = window.location.protocol + "//" + window.location.hostname + "/update/holarse/";
+        $('.update').html('<div class="load"></div>').css('display','inline-block');
+        $.ajax({
+            type:"POST",
+            dataType:"html",
+            url:"./ajax.php",
+            data:"ajax=update&dbu=holarse",
+            success:function(html)
+            {
+                $('.update').html(html);
+            }
+        });
     });
     
     $('.upd_steamdb').click(function()
     {
-        window.location = window.location.protocol + "//" + window.location.hostname + "/update/steamdb/";
+        $('.update').html('<div class="load"></div>').css('display','inline-block');
+        $.ajax({
+            type:"POST",
+            dataType:"html",
+            url:"./ajax.php",
+            data:"ajax=update&dbu=steamdb",
+            success:function(html)
+            {
+                $('.update').html(html);
+            }
+        });
     });
 });
