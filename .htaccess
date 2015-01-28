@@ -2,6 +2,8 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
 RewriteBase /
+RewriteRule ^update/holarse/$ index.php?update=holarse
+RewriteRule ^update/steamdb/$ index.php?update=steamdb
 RewriteRule ^nicht-vorhanden/$ index.php?filter=f0
 RewriteRule ^vorhanden/$ index.php?filter=f1
 
