@@ -4,6 +4,7 @@ function updateSteamdb($db)
 {
     $sdbdata    = getUrl('https://steamdb.info/linux/');
 
+    # Hole alle als funktionierend gemeldete Spiele
     $regex0     = "/(?<=id\=\"table-apps-confirmed\"\>).*(?=\<\/table\>\<\/div\>)/msSU";
     preg_match_all ($regex0, $sdbdata, $availlinux, PREG_PATTERN_ORDER);
 
@@ -30,6 +31,41 @@ function updateSteamdb($db)
             $db->query($eintrag)->execute();
 
             $upcount++;
+        }
+    }
+    
+    # Hole nun die restlichen Spiele mit Linux Symbol
+    $regex00     = "/(?<=id\=\"table-apps\"\>).*(?=\<\/table\>\<\/div\>)/msSU";
+    preg_match_all ($regex00, $sdbdata, $availlinux1, PREG_PATTERN_ORDER);
+
+    $regex01     = "/(?<=\<tr class\=\"app appimg\").*(?=\<\/tr\>)/msSU";
+    preg_match_all ($regex01, $availlinux1[0][0], $gsteamtr, PREG_PATTERN_ORDER);
+    
+    foreach ($gsteamtr[0] AS $key)
+    {
+        if (strpos($key,'Game Possibly Works') !== false)
+        {
+            $regex03    = "/(?<=href\=\"\/app\/).*(?=\/\")/msSU";
+            preg_match_all ($regex03, $key, $gsteamid, PREG_PATTERN_ORDER);
+
+            $regex04    = "/(?<=\<\/a\>\<\/td\>\<td\>).*(?=\<\/td\>)/msSU";
+            preg_match_all ($regex04, $key, $gsteamname, PREG_PATTERN_ORDER);
+            
+            $steamidn   = $gsteamid[0][0];
+            $steamnamen = $gsteamname[0][0];
+            
+            $sql        = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamidn)."'";
+            $db->query($sql)->fetch();
+
+            if ($db->affected_rows == 0)
+            {
+                $eintrag    = "INSERT INTO spiele (steamid, steamname)
+                                VALUES ('$steamidn' , '$steamnamen')";
+
+                $db->query($eintrag)->execute();
+
+                $upcount++;
+            }
         }
     }
     
