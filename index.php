@@ -96,7 +96,7 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
 <!doctype html>
 <html>
 <head>
-    <base href="<?=PROT?>linuxgames.n0paste.tk/">
+    <base href="<?echo PROT.$_SERVER['SERVER_NAME'];?>/">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
