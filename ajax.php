@@ -130,6 +130,33 @@ if ($ajax == 'update' && $dbu != '')
 
     if ($dbu == 'holarse')
         echo updateHolarse($db);
-        
+    
+    
+    # Zähle alle Einträge
+    $sqla  = "SELECT id FROM spiele";
+    $db->query($sqla)->fetch();
+    $all   = $db->affected_rows;
+
+    # Zähle Übereinstimmungen
+    # von Holarse Einträgen
+    $sqlb  = "SELECT id FROM spiele WHERE holarsename != ''";
+    $db->query($sqlb)->fetch();
+    $hol   = $db->affected_rows;
+
+    if ($hol > 0)
+        $percent = round($hol / $all * 100);
+    else
+        $percent = 0;
+
+    # Status Anzeige generieren, welche per JS updated wird
+    $stats = "Gesamt: $all | Steam: $all | Holarse: $hol ($percent%)";
+?>
+    <script>
+    $(function()
+    {
+        $('#stat').html('<?=$stats?>');
+    });
+    </script>
+<?
 }
 ?>
