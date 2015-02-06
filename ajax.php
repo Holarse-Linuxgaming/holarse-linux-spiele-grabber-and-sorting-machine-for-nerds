@@ -150,11 +150,21 @@ if ($ajax == 'update' && $dbu != '')
 
     # Status Anzeige generieren, welche per JS updated wird
     $stats = "Gesamt: $all | Steam: $all | Holarse: $hol ($percent%)";
+    
+    # Letzte Updates Abfragen
+    $updsql     = "SELECT name, xtime FROM `update` ORDER BY id ASC";
+    $upddata    = $db->query($updsql)->fetch();
+    $t_steamdb  = date("H:i",$upddata[0]['xtime']);
+    $t_holarse  = date("H:i",$upddata[1]['xtime']);
+    
+    $upd_time = "SteamDB: $t_steamdb Uhr | Holarse: $t_holarse Uhr";
+    
 ?>
     <script>
     $(function()
     {
         $('#stat').html('<?=$stats?>');
+        $('.updatetime').html('<?=$upd_time?>');
     });
     </script>
 <?

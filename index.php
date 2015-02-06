@@ -136,7 +136,7 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
                             <div class="upd_steamdb">SteamDB</div>
                         </div>
                     </div>
-                    <br>SteamDB: <?=$t_steamdb?> Uhr | Holarse: <?=$t_holarse?> Uhr
+                    <br><span class="updatetime">SteamDB: <?=$t_steamdb?> Uhr | Holarse: <?=$t_holarse?> Uhr</span>
                 </div>
             </div>
         </div>
