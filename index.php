@@ -184,6 +184,7 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
 ?>
         </table>
     </div>
+    <div id="totop"></div>
     <script src="js/script.js"></script>
 </body>
 </html>

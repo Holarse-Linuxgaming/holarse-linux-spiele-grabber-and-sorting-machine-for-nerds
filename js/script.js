@@ -108,4 +108,22 @@ $(function()
             }
         });
     });
+    
+    $(window).scroll(function()
+    {
+        if ($(window).scrollTop() > 350)
+        {
+            $("#totop").fadeIn()('fast');
+        }
+        else
+        {
+            $("#totop").fadeOut()('fast');
+        }
+    });
+
+    $("#totop").click(function()
+    {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        return false;
+    });
 });
