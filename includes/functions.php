@@ -38,7 +38,7 @@ function updateSteamdb($db)
     $regex00     = "/(?<=id\=\"table-apps\"\>).*(?=\<\/table\>\<\/div\>)/msSU";
     preg_match_all ($regex00, $sdbdata, $availlinux1, PREG_PATTERN_ORDER);
 
-    $regex01     = "/(?<=\<tr class\=\"app appimg\").*(?=\<\/tr\>)/msSU";
+    $regex01     = "/(?<=\<tr class\=\"app\").*(?=\<\/tr\>)/msSU";
     preg_match_all ($regex01, $availlinux1[0][0], $gsteamtr, PREG_PATTERN_ORDER);
     
     foreach ($gsteamtr[0] AS $key)
@@ -48,7 +48,7 @@ function updateSteamdb($db)
             $regex03    = "/(?<=href\=\"\/app\/).*(?=\/\")/msSU";
             preg_match_all ($regex03, $key, $gsteamid, PREG_PATTERN_ORDER);
 
-            $regex04    = "/(?<=\<\/a\>\<\/td\>\<td\>).*(?=\<\/td\>)/msSU";
+            $regex04    = "/(?<=\<\/a\>\<\/td\>\<td\>).*(?=\<\/td\>)/U";
             preg_match_all ($regex04, $key, $gsteamname, PREG_PATTERN_ORDER);
             
             $steamidn   = $gsteamid[0][0];
