@@ -102,8 +102,9 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
     <meta charset="utf-8">
     <title>Linuxspiele Liste</title>
     <link rel="icon" href="favicon.png" type="image/x-icon">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery.tablesorter.min.js"></script>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jquery.tablesorter.min.js" defer></script>
+    <script src="js/script.js" defer></script>
 </head>
 <body>
     <div class="box">
@@ -185,6 +186,5 @@ $t_holarse  = date("H:i",$upddata[1]['xtime']);
         </table>
     </div>
     <div id="totop"></div>
-    <script src="js/script.js"></script>
 </body>
 </html>

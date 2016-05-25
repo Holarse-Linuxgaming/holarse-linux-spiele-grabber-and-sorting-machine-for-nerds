@@ -21,36 +21,30 @@ if ($ajax == 'suche' && $in != '')
     if ($in == 'SteamID' && !is_numeric($suche))
         $suche  = '';
 
-    # SQL Abfrage wenn Suchbegriff mindestens 2 Zeichen lang ist
+    $db->select('steamid, steamname, holarsename')->from('spiele');
+    
+    # SQL WHERE Clause wenn Suchbegriff mindestens 2 Zeichen lang ist
     if (strlen($suche) > 1)
     {
         switch ($in)
         {
-            case 'SteamID':     $sql = "SELECT steamid, steamname, holarsename FROM spiele
-                                WHERE steamid = '".$db->escape($suche)."' ORDER BY steamid ASC";
+            case 'SteamID':     $db->where('steamid', (int)$db->escape($suche)); 
             break;
-            case 'Steam':       $sql = "SELECT steamid, steamname, holarsename FROM spiele
-                                WHERE steamname LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+            case 'Steam':       $db->where('steamname LIKE', '%'.$db->escape($suche).'%'); 
             break;
-            case 'Holarse':     $sql = "SELECT steamid, steamname, holarsename FROM spiele
-                                WHERE holarsename LIKE '%".$db->escape($suche)."%' ORDER BY steamid ASC";
+            case 'Holarse':     $db->where('holarsename LIKE', '%'.$db->escape($suche).'%');
             break;
         }
-    }
-    # SQL Abfrage wenn Suchbegriff weniger als 2 Zeichen lang ist
-    else
-    {
-        $sql = "SELECT steamid, steamname, holarsename FROM spiele ORDER BY steamid ASC";
     }
 
     # Hole die daten aus der Datenbank
     # und zähle die SQL Rows
-    $dbdata = $db->query($sql)->fetch();
+    $db->order_by("steamid", "asc");
+    $dbdata = $db->fetch();
     $entry  = $db->affected_rows;
 
     # Zähle alle Einträge
-    $sqla  = "SELECT id FROM spiele";
-    $db->query($sqla)->fetch();
+    $db->select('id')->from('spiele')->fetch();
     $all   = $db->affected_rows;
 
     # Zähle Übereinstimmungen
@@ -126,21 +120,19 @@ if ($ajax == 'update' && $dbu != '')
     $db = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
     
     if ($dbu == 'steamdb')
-        echo updateSteamdb($db);
+        echo updateSteamdbNew($db,STEAM_API_KEY);
 
     if ($dbu == 'holarse')
         echo updateHolarse($db);
     
     
     # Zähle alle Einträge
-    $sqla  = "SELECT id FROM spiele";
-    $db->query($sqla)->fetch();
+    $db->select('id')->from('spiele')->fetch();
     $all   = $db->affected_rows;
 
     # Zähle Übereinstimmungen
     # von Holarse Einträgen
-    $sqlb  = "SELECT id FROM spiele WHERE holarsename != ''";
-    $db->query($sqlb)->fetch();
+    $db->select('id')->from('spiele')->where('holarsename !=', '')->fetch();
     $hol   = $db->affected_rows;
 
     if ($hol > 0)
@@ -152,8 +144,7 @@ if ($ajax == 'update' && $dbu != '')
     $stats = "Gesamt: $all | Steam: $all | Holarse: $hol ($percent%)";
     
     # Letzte Updates Abfragen
-    $updsql     = "SELECT name, xtime FROM `update` ORDER BY id ASC";
-    $upddata    = $db->query($updsql)->fetch();
+    $upddata    = $db->select('name, xtime')->from('`update`')->order_by('id', 'asc')->fetch();
     $t_steamdb  = date("H:i",$upddata[0]['xtime']);
     $t_holarse  = date("H:i",$upddata[1]['xtime']);
     

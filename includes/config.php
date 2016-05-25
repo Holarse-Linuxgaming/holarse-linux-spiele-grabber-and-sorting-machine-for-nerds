@@ -4,6 +4,7 @@ define('DB_SERVER',     'localhost');   # Datenbank Server, normalerweise localh
 define('DB_USER',       '');            # Datenbank Benutzername
 define('DB_PASS',       '');            # Datenbank Passwort
 define('DB_DATABASE',   '');            # Datenbank
+define('STEAM_API_KEY', '');
 # Protokoll des Aufrufs
 if (empty($_SERVER['HTTPS']))
     define('PROT',  'http://');

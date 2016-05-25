@@ -3,7 +3,14 @@
 function updateSteamdb($db)
 {
     $sdbdata    = getUrl('https://steamdb.info/linux/');
-
+    
+    # Falls Url nicht erreichbar ist, hier abbrechen!
+    if ( !isset($sdbdata) )
+    {
+        $updresponse = 'SteamDB Update: Es ist ein Fehler aufgetreten!';
+        return $updresponse;
+    }
+    
     # Hole alle als funktionierend gemeldete Spiele
     $regex0     = "/(?<=id\=\"table-apps-confirmed\"\>).*(?=\<\/table\>\<\/div\>)/msSU";
     preg_match_all ($regex0, $sdbdata, $availlinux, PREG_PATTERN_ORDER);
@@ -77,13 +84,68 @@ function updateSteamdb($db)
     return $updresponse;
 }
 
+# Neue Steamdb Update Funktion
+function updateSteamdbNew($db, $STEAM_API_KEY)
+{
+    $sdbdata    = json_decode(getUrl('http://api.steampowered.com/ISteamApps/GetAppList/v2?key='.$STEAM_API_KEY), true);
+    $games      = json_decode(getUrl('https://raw.githubusercontent.com/SteamDatabase/SteamLinux/master/GAMES.json'), true);
+    #$games      = json_decode(file_get_contents('./GAMES.json', true), true);
+    $upcount    = 0;
+    $sgames     = array();
+
+    # Falls eine Url nicht erreichbar ist, hier abbrechen!
+    if ( !isset($sdbdata) OR !isset($games) )
+    {
+        $updresponse = 'SteamDB Update: Es ist ein Fehler aufgetreten!';
+        return $updresponse;
+    }
+
+    # Erstelle ein benutzbares array der Steam Spiele
+    foreach ($sdbdata['applist']['apps'] AS $key => $value)
+    {
+        $sgames[$value['appid']] = $value['name'];
+    }
+
+    foreach ($games AS $steamid => $value)
+    {
+        if ( !isset($value['Hidden']) )
+        {
+            $sql    = "SELECT steamid FROM spiele WHERE steamid = '".$db->escape($steamid)."'";
+            $db->query($sql)->fetch();
+
+            if ($db->affected_rows == 0)
+            {
+                $eintrag    = "INSERT INTO spiele (steamid, steamname)
+                                VALUES ('".$db->escape($steamid)."' , '".$db->escape($sgames[$steamid])."')";
+
+                $db->query($eintrag)->execute();
+
+                $upcount++;
+            }
+        }
+    }
+
+    $store_time = "UPDATE `update` SET xtime = '".time()."' WHERE name = 'steamdb';";
+
+    $db->query($store_time)->execute();
+
+    $updresponse = 'SteamDB Update: Es wurden '.$upcount.' Einträge hinzugefügt';
+    return $updresponse;
+}
+
 # Holarse Update Funktion
 function updateHolarse($db)
 {
-    $hdata    = json_decode(getUrl('http://www.holarse-linuxgaming.de/api/steamgames.json'),true);
-
+    $hdata    = json_decode(getUrl('https://www.holarse-linuxgaming.de/api/steamgames.json'),true);
     $regex    = "/(?<=\/app\/).[0-9]+/";
     $upcount  = 0;
+
+    # Falls Url nicht erreichbar ist, hier abbrechen!
+    if ( !isset($hdata) )
+    {
+        $updresponse = 'Holarse Update: Es ist ein Fehler aufgetreten!';
+        return $updresponse;
+    }
 
     foreach ($hdata AS $key)
     {
@@ -120,6 +182,8 @@ function updateHolarse($db)
 function getUrl($url)
 {
     $curl = curl_init();
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_POST, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
